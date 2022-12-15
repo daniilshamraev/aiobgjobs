@@ -1,7 +1,7 @@
-from enum import Enum, StrEnum
+from enum import StrEnum, IntEnum
 
 
-class Repeats(Enum):
+class Repeats(IntEnum):
     """
     Repeats entity`s
     """

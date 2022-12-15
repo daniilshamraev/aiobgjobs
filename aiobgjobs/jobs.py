@@ -10,7 +10,7 @@ class Job(object):
 
     def __init__(
             self,
-            func: Coroutine[Any, Any, Any],
+            func: Callable,
             name: str = None,
     ):
         """
@@ -20,9 +20,12 @@ class Job(object):
         :param name:
         """
         self.name = name
-        self._func = func
+        self._func = functools.partial(func)
 
         self.is_done = False
 
+    def __str__(self):
+        return f'<Job is Name: {self.name} | Func name: {self._func.__class__.func.__class__.__name__}>'
+
     async def __call__(self, *args, **kwargs):
-        await self._func
+        await self._func()

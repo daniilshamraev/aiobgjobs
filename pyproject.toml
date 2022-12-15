@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "aiobgjobs"
+version = "0.1.0"
+description = ""
+authors = ["daniilsamraev <shamraev.2002@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+coverage = "^6.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

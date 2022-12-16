@@ -3,7 +3,7 @@ import datetime
 import logging
 
 from aiobgjobs.dispatcher import BgDispatcher
-from aiobgjobs.types import Every
+from aiobgjobs.types import Every, Repeats
 
 logger = logging.Logger(name=__name__, level=logging.DEBUG)
 
@@ -18,8 +18,8 @@ async def simple_func_every_second():
 
 
 @bg_dp.handler_job(
-    every=Every.hour(),
-    count_repeats=5
+    every=Every.weekdays.friday(hour=18, minute=50),
+    count_repeats=Repeats.infinity
 )
 async def simple_func_every_second():
     print('Test2')
@@ -33,5 +33,5 @@ if __name__ == '__main__':
     loop = asyncio.new_event_loop()
     try:
         loop.run_until_complete(main())
-    except* KeyboardInterrupt:
+    except KeyboardInterrupt:
         print('Goodbye!')

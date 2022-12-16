@@ -11,6 +11,7 @@ class Job(object):
     def __init__(
             self,
             func: Callable,
+            kwargs: dict,
             name: str = None,
     ):
         """
@@ -20,7 +21,7 @@ class Job(object):
         :param name:
         """
         self.name = name
-        self._func = functools.partial(func)
+        self._func = functools.partial(func, **kwargs)
 
         self.is_done = False
 

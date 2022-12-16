@@ -1,11 +1,12 @@
 import asyncio
-import datetime
+import datetime as dt
 import logging
+import pytz
 from typing import Callable
 
 from aiobgjobs.handlers import Handler
 from aiobgjobs.jobs import Job
-from aiobgjobs.types import Repeats, Every, EveryResult
+from aiobgjobs.types import Repeats, Every, EveryResult, WeekDayEveryResult
 
 log = logging.getLogger(__name__)
 
@@ -69,28 +70,38 @@ class BgDispatcher(object):
     def handler_job(
             self,
             count_repeats: int | Repeats = Repeats.infinity,
-            every: EveryResult | datetime.timedelta = Every.second,
-            datetime_start: datetime.datetime = datetime.datetime.utcnow(),
+            every: EveryResult | WeekDayEveryResult | dt.timedelta = Every.second,
+            datetime_start: dt.datetime = dt.datetime.utcnow(),
+            tz: pytz.UTC = pytz.timezone('Europe/Moscow'),
             name: str = None
     ):
         """
+        Decorator for registration handler
+        :param tz: Time zone
+        :param name: Name job
+        :param job: Job class instance
+        :param count_repeats: Count repeats job. If -1 then infinity repeat
+        :param every: The period of operation of the job
+        :param datetime_start: Datetime first start job
 
-        :param datetime_start:
-        :param every:
-        :param count_repeats:
-        :param name:
-        :return:
+        >>> bg_dp = BgDispatcher()
+        >>> @bg_dp.handler_job(count_repeats=Repeats.infinity, every=Every.weekdays.friday(), name='Job-1')
+        >>> async def job1():
+        >>>     await asyncio.sleep(3)
+        >>>     print("Job 1 done %s" % dt.datetime.utcnow())
         """
 
-        def decorator(callback: Callable, *args):
+        def decorator(callback: Callable, **kwargs):
             _h = Handler(
                 job=Job(
                     func=callback,
-                    name=name
+                    name=name,
+                    kwargs=kwargs
                 ),
                 count_repeats=count_repeats,
                 every=every,
-                datetime_start=datetime_start
+                datetime_start=datetime_start,
+                tz=tz
             )
             self.register_handler(
                 handler=_h

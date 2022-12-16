@@ -1,3 +1,6 @@
+import datetime
+import functools
+from dataclasses import dataclass
 from enum import StrEnum, IntEnum
 
 
@@ -10,18 +13,26 @@ class Repeats(IntEnum):
 
 
 class _Unity(StrEnum):
-    SECOND = 'second'
+    MILLISECONDS = 'milliseconds'
+    MICROSECONDS = 'microseconds'
+    MINUTES = 'minutes'
     SECONDS = 'seconds'
-    HOUR = 'hour'
     HOURS = 'hours'
-    DAY = 'day'
     DAYS = 'days'
-    WEEK = 'week'
     WEEKS = 'weeks'
-    MONTH = 'month'
-    MONTHS = 'months'
-    YEAR = 'year'
-    YEARS = 'years'
+
+
+class EveryResult:
+    __slots__ = (
+        'delta'
+    )
+
+    def __init__(self, unity: _Unity, count: int):
+
+        assert isinstance(unity, _Unity)
+        assert isinstance(count, int)
+
+        self.delta = datetime.timedelta(**{unity: count})
 
 
 class Every:
@@ -37,91 +48,111 @@ class Every:
         :return: int
         :raise: ValueError('Count don`t < 1')
         """
-        if count > 1:
+        if count < 1:
             raise ValueError('Count don`t < 1')
         return count
 
-    @property
-    def second(self) -> tuple[_Unity, int]:
+    @staticmethod
+    def millisecond() -> EveryResult:
         """
-        Get entity one second
-        :return: tuple[_Unity, int]
+        Get entity one millisecond
+        :return: Every.EveryResult
         """
-        return _Unity.SECOND, Every.validate_count(1)
+        return EveryResult(_Unity.MILLISECONDS, Every.validate_count(1))
 
     @staticmethod
-    def seconds(count: int) -> tuple[_Unity, int]:
+    def milliseconds(count: int) -> EveryResult:
+        """
+        Get entity count milliseconds
+        :param count: count entity's
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.MILLISECONDS, Every.validate_count(count))
+
+    @staticmethod
+    def microsecond() -> EveryResult:
+        """
+        Get entity one microsecond
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.MICROSECONDS, Every.validate_count(1))
+
+    @staticmethod
+    def microseconds(count: int) -> EveryResult:
+        """
+        Get entity count microseconds
+        :param count: count entity's
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.MICROSECONDS, Every.validate_count(count))
+
+    @staticmethod
+    def second() -> EveryResult:
+        """
+        Get entity one second
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.SECONDS, Every.validate_count(1))
+
+    @staticmethod
+    def seconds(count: int) -> EveryResult:
         """
         Get entity count seconds
         :param count: count entity's
-        :return: tuple[_Unity, int]
+        :return: Every.EveryResult
         """
-        return _Unity.SECONDS, Every.validate_count(count)
-
-    @property
-    def hour(self) -> tuple[_Unity, int]:
-        """
-        Get entity one hour
-        :return: tuple[_Unity, int]
-        """
-        return _Unity.HOUR, Every.validate_count(1)
+        return EveryResult(_Unity.SECONDS, Every.validate_count(count))
 
     @staticmethod
-    def hours(count: int) -> tuple[_Unity, int]:
+    def minute() -> EveryResult:
+        """
+        Get entity one minute
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.MINUTES, Every.validate_count(1))
+
+    @staticmethod
+    def minutes(count: int) -> EveryResult:
+        """
+        Get entity count minutes
+        :param count: count entity's
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.MINUTES, Every.validate_count(count))
+
+    @staticmethod
+    def hour() -> EveryResult:
+        """
+        Get entity one hour
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.HOURS, Every.validate_count(1))
+
+    @staticmethod
+    def hours(count: int) -> EveryResult:
         """
         Get entity count hours
         :param count: count entity's
-        :return: tuple[_Unity, int]
+        :return: Every.EveryResult
         """
-        return _Unity.HOURS, Every.validate_count(count)
-
-    @property
-    def week(self) -> tuple[_Unity, int]:
-        """
-        Get entity one week
-        :return: tuple[_Unity, int]
-        """
-        return _Unity.WEEK, Every.validate_count(1)
+        return EveryResult(_Unity.HOURS, Every.validate_count(count))
 
     @staticmethod
-    def weeks(count: int) -> tuple[_Unity, int]:
+    def week() -> EveryResult:
+        """
+        Get entity one week
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.WEEKS, Every.validate_count(1))
+
+    @staticmethod
+    def weeks(count: int) -> EveryResult:
         """
         Get entity count weeks
         :param count: count entity's
-        :return: tuple[_Unity, int]
+        :return: Every.EveryResult
         """
-        return _Unity.WEEKS, Every.validate_count(count)
+        return EveryResult(_Unity.WEEKS, Every.validate_count(count))
 
-    @property
-    def month(self) -> tuple[_Unity, int]:
-        """
-        Get entity one month
-        :return: tuple[_Unity, int]
-        """
-        return _Unity.MONTH, Every.validate_count(1)
-
-    @staticmethod
-    def months(count: int) -> tuple[_Unity, int]:
-        """
-        Get entity count months
-        :param count: count entity's
-        :return: tuple[_Unity, int]
-        """
-        return _Unity.MONTHS, Every.validate_count(count)
-
-    @property
-    def year(self) -> tuple[_Unity, int]:
-        """
-        Get entity one year
-        :return: tuple[_Unity, int]
-        """
-        return _Unity.YEAR, Every.validate_count(1)
-
-    @staticmethod
-    def years(count: int) -> tuple[_Unity, int]:
-        """
-        Get entity count years
-        :param count: count entity's
-        :return: tuple[_Unity, int]
-        """
-        return _Unity.YEARS, Every.validate_count(count)
+    class WeekDays:
+        pass

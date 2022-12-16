@@ -1,12 +1,11 @@
 import asyncio
 import datetime
 import logging
-from logging import Logger
 from typing import Callable
 
 from aiobgjobs.handlers import Handler
 from aiobgjobs.jobs import Job
-from aiobgjobs.types import Repeats, Every, _Unity
+from aiobgjobs.types import Repeats, Every, EveryResult
 
 log = logging.getLogger(__name__)
 
@@ -48,10 +47,6 @@ class BgDispatcher(object):
     def __iter__(self):
         yield [handler for handler in self._register_handlers]
 
-    # def every(self, count_repeats: int | Repeats = Repeats.infinity):
-    #     self._last_count_repeats = count_repeats
-    #     return self
-
     @staticmethod
     def _debug_msg(message: str):
         log.debug(message)
@@ -60,10 +55,11 @@ class BgDispatcher(object):
         for handler in self._register_handlers:
             await handler()
 
-    async def start(self, relax: float | int = .1):
+    async def start(self, relax: float | int | None = .1):
         while True:
             await self()
-            await asyncio.sleep(relax)
+            if relax:
+                await asyncio.sleep(relax)
 
     def register_handler(
             self, handler: Handler,
@@ -72,17 +68,15 @@ class BgDispatcher(object):
 
     def handler_job(
             self,
-            interval: datetime.timedelta | None = None,
             count_repeats: int | Repeats = Repeats.infinity,
-            every: Every | None = None,
-            datetime_start: datetime.datetime | None = datetime.datetime.utcnow(),
+            every: EveryResult | datetime.timedelta = Every.second,
+            datetime_start: datetime.datetime = datetime.datetime.utcnow(),
             name: str = None
     ):
         """
 
         :param datetime_start:
         :param every:
-        :param interval:
         :param count_repeats:
         :param name:
         :return:
@@ -94,7 +88,6 @@ class BgDispatcher(object):
                     func=callback,
                     name=name
                 ),
-                interval=interval,
                 count_repeats=count_repeats,
                 every=every,
                 datetime_start=datetime_start

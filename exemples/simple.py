@@ -5,28 +5,43 @@ import logging
 from aiobgjobs.dispatcher import BgDispatcher
 from aiobgjobs.types import Every, Repeats
 
-logger = logging.Logger(name=__name__, level=logging.DEBUG)
-
 bg_dp = BgDispatcher()
 
 
 @bg_dp.handler_job(
-    every=Every.seconds(5)
+    every=Every.seconds(15),
+    count_repeats=3
 )
 async def simple_func_every_second():
     print('Test')
 
 
 @bg_dp.handler_job(
-    every=Every.weekdays.friday(hour=18, minute=50),
+    every=Every.weekdays.monday(hour=11, minute=40),
     count_repeats=Repeats.infinity
 )
-async def simple_func_every_second():
+async def simple_func_infinity_monday():
     print('Test2')
 
 
+@bg_dp.handler_job(
+    every=Every.minutes(2),
+    count_repeats=Repeats.infinity
+)
+async def simple_func_every_2_minutes():
+    print('Test3')
+
+
+@bg_dp.handler_job(
+    count_repeats=Repeats.one,
+    datetime_start=datetime.timedelta(minutes=2.0)
+)
+async def simple_func_delta_to_start():
+    print('Test4')
+
+
 async def main():
-    await asyncio.create_task(bg_dp.start(relax=None))
+    await asyncio.create_task(bg_dp.start(relax=.3))
 
 
 if __name__ == '__main__':

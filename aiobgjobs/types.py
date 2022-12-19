@@ -1,5 +1,4 @@
 import datetime
-import calendar
 from enum import StrEnum, IntEnum
 
 
@@ -63,8 +62,8 @@ class WeekDayEveryResult(EveryResult):
         'datetime_start'
     )
 
-    def __init__(self, unity: _Unity, count: int, datetime_start: datetime.datetime):
-        assert datetime_start > datetime.datetime.utcnow()
+    def __init__(self, unity: _Unity, count: int, datetime_start: datetime.datetime, tz=None):
+        assert datetime_start > datetime.datetime.now(tz)
         self.datetime_start = datetime_start
 
         super().__init__(unity, count)
@@ -202,19 +201,21 @@ class Every:
     class weekdays:
 
         @staticmethod
-        def _get_result(day: _WeekDaysUnity, hour: int, minute: int) -> WeekDayEveryResult:
+        def _get_result(day: _WeekDaysUnity, hour: int, minute: int, tz=None) -> WeekDayEveryResult:
             """
 
             :rtype: WeekDayEveryResult
 
             >>> Every.weekdays.friday(hour=10, minute=30)
             """
-            datetime_now = datetime.datetime.utcnow()
+
+            datetime_now = datetime.datetime.now(tz)
 
             today_week_day = datetime_now.weekday() + 1
 
             if today_week_day == day and \
-                    (datetime_now.hour > hour and datetime_now.minute > minute):
+                    (datetime_now.hour < hour or
+                     (datetime_now.hour == hour and datetime_now.minute <= minute)):
                 datetime_start = datetime.datetime(
                     year=datetime_now.year,
                     month=datetime_now.month,

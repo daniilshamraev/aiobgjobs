@@ -69,9 +69,10 @@ class BgDispatcher(object):
 
     def handler_job(
             self,
-            count_repeats: int | Repeats = Repeats.infinity,
-            every: EveryResult | WeekDayEveryResult | dt.timedelta = Every.second,
-            datetime_start: dt.datetime = dt.datetime.utcnow(),
+            *,
+            every: EveryResult | WeekDayEveryResult | dt.timedelta | None = None,
+            count_repeats: int | Repeats,
+            datetime_start: dt.datetime | dt.timedelta = (dt.datetime.now() + dt.timedelta(seconds=1)),
             tz: pytz.UTC = pytz.timezone('Europe/Moscow'),
             name: str = None
     ):
@@ -88,7 +89,7 @@ class BgDispatcher(object):
         >>> @bg_dp.handler_job(count_repeats=Repeats.infinity, every=Every.weekdays.friday(), name='Job-1')
         >>> async def job1():
         >>>     await asyncio.sleep(3)
-        >>>     print("Job 1 done %s" % dt.datetime.utcnow())
+        >>>     print("Job 1 done %s" % dt.datetime.now())
         """
 
         def decorator(callback: Callable, **kwargs):

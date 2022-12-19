@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "aiobgjobs"
 version = "0.1.0"
-description = ""
+description = "This library is designed for asynchronous execution of scheduled tasks."
 authors = ["daniilsamraev <shamraev.2002@gmail.com>"]
 readme = "README.md"
 

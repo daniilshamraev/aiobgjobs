@@ -290,7 +290,7 @@ six = ">=1.5"
 name = "pytz"
 version = "2022.7"
 description = "World timezone definitions, modern and historical"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -542,7 +542,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.11"
-content-hash = "774fc1d82c2310d7074718ad27b59e347285ec1fef9c2c8fc692d23421b3063d"
+content-hash = "0d3dbb0d3175eefdc51176cfae7e969cc0e78eb11e7ca90ffbfdffdd057d3cd0"
 
 [metadata.files]
 alabaster = [

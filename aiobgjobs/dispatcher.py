@@ -80,7 +80,6 @@ class BgDispatcher(object):
         Decorator for registration handler
         :param tz: Time zone
         :param name: Name job
-        :param job: Job class instance
         :param count_repeats: Count repeats job. If -1 then infinity repeat
         :param every: The period of operation of the job
         :param datetime_start: Datetime first start job

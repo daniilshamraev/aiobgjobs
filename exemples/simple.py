@@ -39,6 +39,14 @@ async def simple_func_delta_to_start():
     print('Test4')
 
 
+@bg_dp.handler_job(
+    count_repeats=Repeats.infinity,
+    every=Every.day(hour=0, minute=0)
+)
+async def reg():
+    print("test")
+
+
 async def main():
     await asyncio.create_task(bg_dp.start(relax=.3))
 

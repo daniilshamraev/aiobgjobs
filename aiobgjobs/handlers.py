@@ -4,7 +4,7 @@ import datetime as dt
 import pytz
 
 from aiobgjobs.jobs import Job
-from aiobgjobs.types import Repeats, Every, EveryResult, WeekDayEveryResult
+from aiobgjobs.types import Repeats, EveryResult, WeekDayEveryResult
 
 
 class Handler:

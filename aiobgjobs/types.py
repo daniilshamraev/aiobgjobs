@@ -1,5 +1,6 @@
 import datetime
 from enum import StrEnum, IntEnum
+from typing import Any
 
 
 class Repeats(IntEnum):
@@ -31,7 +32,7 @@ class EveryResult:
 
         self.delta = datetime.timedelta(**{unity: count})
 
-    def __add__(self, other):
+    def __add__(self, other: Any):
         """
         Add timedelta to timedelta
         :param other: timedelta
@@ -182,6 +183,31 @@ class Every:
         return EveryResult(_Unity.HOURS, Every.validate_count(count))
 
     @staticmethod
+    def day(hour: int, minute: int, tz=None) -> EveryResult:
+        """
+        Get entity one day
+        :param hour: Hours
+        :param minute: Minutes
+        :param tz: TimeZone
+        :return: Every.EveryResult
+        """
+        return Every.weekdays.__call__(
+            day=_WeekDaysUnity(datetime.date.today().weekday()),
+            hour=hour,
+            minute=minute,
+            tz=tz
+        )
+
+    @staticmethod
+    def days(count: int) -> EveryResult:
+        """
+        Get entity count days
+        :param count: count entity's
+        :return: Every.EveryResult
+        """
+        return EveryResult(_Unity.WEEKS, Every.validate_count(count))
+
+    @staticmethod
     def week() -> EveryResult:
         """
         Get entity one week
@@ -199,9 +225,10 @@ class Every:
         return EveryResult(_Unity.WEEKS, Every.validate_count(count))
 
     class weekdays:
+        """Weekdays class"""
 
         @staticmethod
-        def _get_result(day: _WeekDaysUnity, hour: int, minute: int, tz=None) -> WeekDayEveryResult:
+        def __call__(day: _WeekDaysUnity, hour: int, minute: int, tz=None) -> WeekDayEveryResult:
             """
 
             :rtype: WeekDayEveryResult
@@ -267,7 +294,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            return Every.weekdays._get_result(
+            return Every.weekdays.__call__(
                 _WeekDaysUnity.MONDAY,
                 hour,
                 minute
@@ -283,7 +310,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            return Every.weekdays._get_result(
+            return Every.weekdays.__call__(
                 _WeekDaysUnity.TUESDAY,
                 hour,
                 minute
@@ -299,7 +326,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            return Every.weekdays._get_result(
+            return Every.weekdays.__call__(
                 _WeekDaysUnity.WEDNESDAY,
                 hour,
                 minute
@@ -315,7 +342,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            return Every.weekdays._get_result(
+            return Every.weekdays.__call__(
                 _WeekDaysUnity.WEDNESDAY,
                 hour,
                 minute
@@ -331,7 +358,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            result = Every.weekdays._get_result(
+            result = Every.weekdays.__call__(
                 _WeekDaysUnity.WEDNESDAY,
                 hour,
                 minute
@@ -351,7 +378,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            return Every.weekdays._get_result(
+            return Every.weekdays.__call__(
                 _WeekDaysUnity.SATURDAY,
                 hour,
                 minute
@@ -367,7 +394,7 @@ class Every:
             """
             Every.weekdays._validate_hour_and_minute(hour, minute)
 
-            return Every.weekdays._get_result(
+            return Every.weekdays.__call__(
                 _WeekDaysUnity.SUNDAY,
                 hour,
                 minute

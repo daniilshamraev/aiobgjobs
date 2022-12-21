@@ -1,6 +1,5 @@
 import asyncio
 import datetime
-import logging
 
 from aiobgjobs.dispatcher import BgDispatcher
 from aiobgjobs.types import Every, Repeats

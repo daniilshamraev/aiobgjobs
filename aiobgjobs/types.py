@@ -1,5 +1,4 @@
 import datetime
-import sys
 from enum import IntEnum
 from typing import Any
 
@@ -14,6 +13,7 @@ class Repeats(IntEnum):
 
 try:
     from enum import StrEnum
+
 
     class _Unity(StrEnum):
         MILLISECONDS = 'milliseconds'
@@ -36,7 +36,6 @@ except ImportError:
         HOURS = 'hours'
         DAYS = 'days'
         WEEKS = 'weeks'
-
 
 
 class EveryResult:
@@ -381,8 +380,6 @@ class Every:
                 hour,
                 minute
             )
-
-            print(result)
 
             return result
 

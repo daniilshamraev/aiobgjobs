@@ -21,7 +21,7 @@ class TestBgDispatcher(unittest.TestCase):
         )
 
     def test_error_logger(self):
-        dp = BgDispatcher(logger=self.logger)
+        dp = BgDispatcher()
 
         self.assertEqual(
             first=0,

@@ -1,5 +1,6 @@
 import datetime
-from enum import StrEnum, IntEnum
+import sys
+from enum import IntEnum
 from typing import Any
 
 
@@ -11,14 +12,31 @@ class Repeats(IntEnum):
     one = 1
 
 
-class _Unity(StrEnum):
-    MILLISECONDS = 'milliseconds'
-    MICROSECONDS = 'microseconds'
-    MINUTES = 'minutes'
-    SECONDS = 'seconds'
-    HOURS = 'hours'
-    DAYS = 'days'
-    WEEKS = 'weeks'
+try:
+    from enum import StrEnum
+
+    class _Unity(StrEnum):
+        MILLISECONDS = 'milliseconds'
+        MICROSECONDS = 'microseconds'
+        MINUTES = 'minutes'
+        SECONDS = 'seconds'
+        HOURS = 'hours'
+        DAYS = 'days'
+        WEEKS = 'weeks'
+
+except ImportError:
+    from enum import Enum
+
+
+    class _Unity(str, Enum):
+        MILLISECONDS = 'milliseconds'
+        MICROSECONDS = 'microseconds'
+        MINUTES = 'minutes'
+        SECONDS = 'seconds'
+        HOURS = 'hours'
+        DAYS = 'days'
+        WEEKS = 'weeks'
+
 
 
 class EveryResult:

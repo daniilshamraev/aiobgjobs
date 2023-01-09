@@ -1,5 +1,6 @@
 import asyncio
-import datetime
+from datetime import datetime as dt
+from datetime import timedelta
 
 from aiobgjobs.dispatcher import BgDispatcher
 from aiobgjobs.types import Every, Repeats
@@ -33,18 +34,24 @@ async def simple_func_every_2_minutes():
 
 @bg_dp.handler_job(
     count_repeats=Repeats.one,
-    datetime_start=datetime.timedelta(minutes=2.0)
+    datetime_start=timedelta(minutes=2.0)
 )
 async def simple_func_delta_to_start():
     print('Test4')
 
 
 @bg_dp.handler_job(
-    count_repeats=Repeats.infinity,
-    every=Every.day(hour=0, minute=0)
+    every=Every.day(),
+    datetime_start=dt.now().replace(
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0
+    ) + timedelta(days=1),
+    count_repeats=Repeats.infinity
 )
-async def reg():
-    print("test")
+async def every_day():
+    print("every day test")
 
 
 async def main():

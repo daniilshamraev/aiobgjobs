@@ -200,7 +200,7 @@ class Every:
         return EveryResult(_Unity.HOURS, Every.validate_count(count))
 
     @staticmethod
-    def day(hour: int, minute: int, tz=None) -> EveryResult:
+    def day() -> EveryResult:
         """
         Get entity one day
         :param hour: Hours
@@ -208,12 +208,7 @@ class Every:
         :param tz: TimeZone
         :return: Every.EveryResult
         """
-        return Every.weekdays.__call__(
-            day=_WeekDaysUnity(datetime.date.today().weekday()),
-            hour=hour,
-            minute=minute,
-            tz=tz
-        )
+        return EveryResult(_Unity.DAYS, Every.validate_count(1))
 
     @staticmethod
     def days(count: int) -> EveryResult:

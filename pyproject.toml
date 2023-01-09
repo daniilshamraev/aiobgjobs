@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "aiobgjobs"
-version = "0.1.5"
+version = "0.1.6"
+repository = "https://github.com/daniilshamraev/aiobgjobs"
 description = "This library is designed for asynchronous execution of scheduled tasks."
 authors = ["daniilsamraev <shamraev.2002@gmail.com>"]
 readme = "README.md"
